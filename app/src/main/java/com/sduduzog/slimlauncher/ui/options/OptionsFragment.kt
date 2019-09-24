@@ -16,6 +16,8 @@ import com.sduduzog.slimlauncher.dialogs.ChangeThemeDialog
 import com.sduduzog.slimlauncher.dialogs.ChooseTimeFormatDialog
 import com.sduduzog.slimlauncher.utils.BaseFragment
 import kotlinx.android.synthetic.main.options_fragment.*
+import com.amirarcane.lockscreen.activity.EnterPinActivity
+
 
 class OptionsFragment : BaseFragment() {
     override fun getFragmentView(): ViewGroup = options_fragment
@@ -57,5 +59,10 @@ class OptionsFragment : BaseFragment() {
             }
         }
         options_fragment_customise_apps.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_optionsFragment_to_customiseAppsFragment))
+
+        options_fragment_reset_pin.setOnClickListener {
+            val intent = EnterPinActivity.getIntent(context, true)
+            launchActivity(it, intent)
+        }
     }
 }

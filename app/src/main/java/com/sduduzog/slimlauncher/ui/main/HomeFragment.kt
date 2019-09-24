@@ -1,5 +1,6 @@
 package com.sduduzog.slimlauncher.ui.main
 
+import android.app.Activity.RESULT_OK
 import android.content.*
 import android.os.Build
 import android.os.Bundle
@@ -8,9 +9,11 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import com.amirarcane.lockscreen.activity.EnterPinActivity
 import com.sduduzog.slimlauncher.R
 import com.sduduzog.slimlauncher.adapters.HomeAdapter
 import com.sduduzog.slimlauncher.data.MainViewModel
@@ -21,6 +24,8 @@ import kotlinx.android.synthetic.main.home_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+
+const val PIN_REQUEST_CODE: Int = 7331
 
 class HomeFragment : BaseFragment(), OnLaunchAppListener {
 
@@ -55,7 +60,19 @@ class HomeFragment : BaseFragment(), OnLaunchAppListener {
         })
 
         setEventListeners()
-        home_fragment_options.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_optionsFragment))
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            PIN_REQUEST_CODE -> if (resultCode == RESULT_OK) {
+                Toast.makeText(activity, "Settings unlocked!", Toast.LENGTH_LONG).show()
+                Navigation.findNavController(view!!).navigate(R.id.action_global_optionsFragment)
+            } else {
+                Toast.makeText(activity, "PIN failed!", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onStart() {
@@ -130,6 +147,11 @@ class HomeFragment : BaseFragment(), OnLaunchAppListener {
             } catch (e: Exception) {
                 // Do nothing
             }
+        }
+
+        home_fragment_options.setOnClickListener {
+            val intent = Intent(context, EnterPinActivity::class.java)
+            launchActivity(it, intent, PIN_REQUEST_CODE)
         }
     }
 

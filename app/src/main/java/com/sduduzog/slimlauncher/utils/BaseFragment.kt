@@ -50,13 +50,17 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
-    protected fun launchActivity(view: View, intent: Intent) {
+    protected fun launchActivity(view: View, intent: Intent, code: Int = -1) {
         val left = 0
         val top = 0
         val width = view.measuredWidth
         val height = view.measuredHeight
         val opts = ActivityOptionsCompat.makeClipRevealAnimation(view, left, top, width, height)
-        startActivity(intent, opts.toBundle())
+        if (code == -1) {
+            startActivity(intent, opts.toBundle())
+        } else {
+            startActivityForResult(intent, code, opts.toBundle())
+        }
     }
 
     open fun onBack(): Boolean = false

@@ -37,5 +37,8 @@
         android:name="com.sduduzog.slimlauncher.ui.options.AddAppFragment"
         android:label="add_app_fragment"
         tools:layout="@layout/add_app_fragment" />
+    <action
+        android:id="@+id/action_global_optionsFragment"
+        app:destination="@id/optionsFragment" />
 
 </navigation>
